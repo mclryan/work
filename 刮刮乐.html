@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Document</title>
+<style>
+*{margin: 0; padding: 0;}
+.box{
+    width: 400px;
+    height: 200px;
+    position: relative;
+    margin: 50px auto 0;
+}
+.txt{
+    text-align: center;
+    height: 200px;
+    line-height: 176px;
+    border: 12px dashed #000;
+    box-sizing: border-box;
+    display: none;
+}
+.cvs{
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+</style>
+</head>
+<body>
+
+<div class="box">
+    <h1 class="txt">谢谢惠顾</h1>
+    <canvas class="cvs" width="400" height="200"></canvas>
+</div>
+
+<script>
+var box = document.querySelector('.box');
+var txt = document.querySelector('.txt');
+var cvs = document.querySelector('.cvs');
+var ctx = cvs.getContext('2d');
+
+var arr = ['谢谢惠顾','一等奖','谢谢惠顾','再来一瓶','二等奖','谢谢惠顾','谢谢惠顾','谢谢惠顾','三等奖','谢谢惠顾','三等奖','三等奖','谢谢惠顾','谢谢惠顾','再来一瓶','谢谢惠顾','谢谢惠顾','美女一枚','谢谢惠顾','二等奖','谢谢惠顾'];
+
+var num = Math.floor(Math.random()*arr.length);
+txt.innerText = arr[num];
+
+var img = new Image();
+img.src = 'ggl.png';
+img.onload = function (){
+    ctx.beginPath();
+    ctx.drawImage(this,0,0,400,200);
+    ctx.closePath();
+
+    cvs.onmousedown = function (e){
+        txt.style.display = 'block';
+        e.preventDefault();
+        cvs.onmousemove = function (e){
+            ctx.globalCompositeOperation = 'destination-out';
+            var x = e.clientX - box.offsetLeft;
+            var y = e.clientY - box.offsetTop;
+            ctx.beginPath();
+            ctx.arc(x,y,10,0,2*Math.PI);
+            ctx.fill();
+            ctx.closePath();
+        }
+        cvs.onmouseup = function (){
+            cvs.onmousemove = null;
+        }
+    }
+}
+
+</script>
+</body>
+</html>
